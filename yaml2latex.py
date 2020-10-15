@@ -21,12 +21,12 @@ If the value for of the key "selectors" (the word to its right) is changed to
 "selectors".
 """
 yaml_fields = {
-    "template": "template", # Template field
-    "dependencies": "dependencies", # Dependencies field
-    "selectors": "select", # List of selectors
-    "replace": "replace", # Replace list
-    "vars": "vars", # Variables
-    "system": "texconverter" # Compile TeX file (i.e. pdflatex, xelatex,...)
+    "template": "template",  # Template field
+    "dependencies": "dependencies",  # Dependencies field
+    "selectors": "select",  # List of selectors
+    "replace": "replace",  # Replace list
+    "vars": "vars",  # Variables
+    "system": "texconverter"  # Compile TeX file (i.e. pdflatex, xelatex,...)
 }
 
 
@@ -39,6 +39,8 @@ yaml_reserved = {
     "file": "file",
     "var": "var",
     "env": "env",
+    "opts": "opts",
+    "args": "args",
     "tablerow": "tablerow",
     "tag": ("<<<< ", " >>>>"),
 }
@@ -148,14 +150,15 @@ def parseEntry(subelem1, subelem2=None, select_dict=None, replace_dict=None, var
     If is not any of the cases above, convert subelem2 to string.
     """
 
-    all_dicts = { # Keys should have the name of the parameters in parseEntry
+    all_dicts = {  # Keys should have the name of the parameters in parseEntry
         "select_dict": select_dict,
         "replace_dict": replace_dict,
         "vars_dict": vars_dict,
         "yaml_dir": yaml_dir
-    } # This dictionary is created to easen recursion without creating global variables
+    }  # This dictionary is created to easen recursion without creating global variables
 
-    if select_dict and subelem1 in select_dict.keys():  # subelem1 is the key of the dict {selector1: 'english', selector2: 1.225, ...}
+    # subelem1 is the key of the dict {selector1: 'english', selector2: 1.225, ...}
+    if select_dict and subelem1 in select_dict.keys():
         """Select value with the key that is specified in the selector
         select_dict[subelem1].
         """
@@ -190,12 +193,12 @@ def parseEntry(subelem1, subelem2=None, select_dict=None, replace_dict=None, var
         name = str(subelem2["name"])
 
         str_opts = ""
-        if "opts" in subelem2.keys():
-            str_opts = list2args(subelem2["opts"], ("[", "]"), **all_dicts)
+        if yaml_reserved["opts"] in subelem2.keys():
+            str_opts = list2args(subelem2[yaml_reserved["opts"]], ("[", "]"), **all_dicts)
 
         str_args = ""
-        if "args" in subelem2.keys():
-            str_args = list2args(subelem2["args"], **all_dicts)
+        if yaml_reserved["args"] in subelem2.keys():
+            str_args = list2args(subelem2[yaml_reserved["args"]], **all_dicts)
 
         return "\n" + \
             "\\begin{" + name + "}" + str_opts + str_args + "\n" + \
@@ -233,12 +236,13 @@ def parseEntry(subelem1, subelem2=None, select_dict=None, replace_dict=None, var
         Parse again subelem2 if it does not contain the keys.
         """
 
-        if "args" in subelem2.keys():  # subelem1 is the name of the command, and the dict subelem2 contains the arguments args and options opts
+        # subelem1 is the name of the command, and the dict subelem2 contains the arguments args and options opts
+        if yaml_reserved["args"] in subelem2.keys():
             str_opts = ""
-            if "opts" in subelem2.keys():
-                str_opts = list2args(subelem2["opts"], ("[", "]"), **all_dicts)
+            if yaml_reserved["opts"] in subelem2.keys():
+                str_opts = list2args(subelem2[yaml_reserved["opts"]], ("[", "]"), **all_dicts)
 
-            str_args = list2args(subelem2["args"], **all_dicts)
+            str_args = list2args(subelem2[yaml_reserved["args"]], **all_dicts)
 
             # Its children are the arguments
             return "\\" + str(subelem1) + str_opts + str_args + "\n"
@@ -277,11 +281,13 @@ def replaceAllTags(tex_template, replace_dict, select_dict=None, vars_dict=None,
 
     for tag, subst in replace_dict.items():  # Replace tag with subst (substitute)
 
-        template = replaceTag(template, tag, subst, select_dict=select_dict, replace_dict=replace_dict, vars_dict=vars_dict, yaml_dir=yaml_dir)
+        template = replaceTag(template, tag, subst, select_dict=select_dict,
+                              replace_dict=replace_dict, vars_dict=vars_dict, yaml_dir=yaml_dir)
 
     for tag, subst in select_dict.items():
 
-        template = replaceTag(template, tag, subst, parse=False, select_dict=select_dict, replace_dict=replace_dict, vars_dict=vars_dict, yaml_dir=yaml_dir)
+        template = replaceTag(template, tag, subst, parse=False, select_dict=select_dict,
+                              replace_dict=replace_dict, vars_dict=vars_dict, yaml_dir=yaml_dir)
 
     return template
 
@@ -318,10 +324,12 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--no-pdf', dest='pdf', action='store_false')
-    parser.add_argument('--pdf', dest='pdf', action='store_true') # This below the other means that if no --pdf is passed, the default is True
+    # This below the other means that if no --pdf is passed, the default is True
+    parser.add_argument('--pdf', dest='pdf', action='store_true')
     parser.add_argument("--"+yaml_fields["selectors"], nargs=2, action="append",
                         help="choose selector from "+yaml_fields["selectors"]+" and its value. Multiple can be specified: "+"--"+yaml_fields["selectors"]+" SELECTOR VALUE "+"--"+yaml_fields["selectors"]+" SELECTOR VALUE ..."+"IMPORTANT: the flag takes the name of the key in the YAML file")
-    parser.add_argument("--"+yaml_fields["template"], help="override "+yaml_fields["template"]+" with the file specified")
+    parser.add_argument("--"+yaml_fields["template"], help="override " +
+                        yaml_fields["template"]+" with the file specified")
     # Default source is "classes/cv/cv.yaml"
     parser.add_argument("--"+yaml_fields["system"], default="xelatex")
     parser.add_argument("input", nargs='?', default="cv.yaml")
@@ -337,7 +345,7 @@ def main():
     # basename = os.path.splitext(os.path.basename(yaml_filename))[0]  # From "file.yaml" to "file"
 
     print("yaml_in", yaml_in, yaml_dir)
-    
+
     yaml_dict = yaml2dict(yaml_in)
     try:
         tex_template = os.path.join(
@@ -345,17 +353,22 @@ def main():
     except:
         print("No template specified neither as flag nor in "+yaml_filename)
 
-    if isinstance(yaml_dict, dict) and any(x in yaml_fields.keys() for x in yaml_dict.keys()): # yaml_dict has the usual structure
-        dependencies = yaml_dict[yaml_fields["dependencies"]] if yaml_fields["dependencies"] in yaml_dict.keys() else None
+    # yaml_dict has the usual structure
+    if isinstance(yaml_dict, dict) and any(x in yaml_fields.keys() for x in yaml_dict.keys()):
+        dependencies = yaml_dict[yaml_fields["dependencies"]
+                                 ] if yaml_fields["dependencies"] in yaml_dict.keys() else None
         # if not dependencies:
         #     dependencies = [None]
-        replace_dict = yaml_dict[yaml_fields["replace"]] if yaml_fields["replace"] in yaml_dict.keys() else None
+        replace_dict = yaml_dict[yaml_fields["replace"]
+                                 ] if yaml_fields["replace"] in yaml_dict.keys() else None
         # if not replace_dict:
         #     replace_dict = [None]
-        vars_dict = yaml_dict[yaml_fields["vars"]] if yaml_fields["vars"] in yaml_dict.keys() else None
+        vars_dict = yaml_dict[yaml_fields["vars"]
+                              ] if yaml_fields["vars"] in yaml_dict.keys() else None
         # if not vars_dict:
         #     vars_dict = [None]
-        selectors = yaml_dict[yaml_fields["selectors"]] if yaml_fields["selectors"] in yaml_dict.keys() else None
+        selectors = yaml_dict[yaml_fields["selectors"]
+                              ] if yaml_fields["selectors"] in yaml_dict.keys() else None
         # if not selectors:
         #     selectors = [None]
     else:
@@ -367,7 +380,7 @@ def main():
 
     select_list = args_dict[yaml_fields["selectors"]]
     if not select_list:
-        select_list = [] # If void
+        select_list = []  # If void
 
     selector_dict = dict()
     for selector in select_list:
@@ -383,16 +396,19 @@ def main():
         else:
             selector_dict[selector_key].add(selector_val)
 
-    if isinstance(selectors, dict): # This means that it contains defaults
-        for selector_key, selector_vals in selectors.items(): # Add the selectors and its defaults specified in the
-            selector_vals = selector_vals if isinstance(selector_vals, list) else [selector_vals] # Ensure that it is a list, even if it contains one member (the only default option)
+    if isinstance(selectors, dict):  # This means that it contains defaults
+        for selector_key, selector_vals in selectors.items():  # Add the selectors and its defaults specified in the
+            # Ensure that it is a list, even if it contains one member (the only default option)
+            selector_vals = selector_vals if isinstance(selector_vals, list) else [selector_vals]
             for selector_val in selector_vals:
                 if selector_key not in selector_dict.keys():
-                    selector_dict[selector_key] = {selector_val}  # Create set of element selector_val
+                    # Create set of element selector_val
+                    selector_dict[selector_key] = {selector_val}
                 else:
                     selector_dict[selector_key].add(selector_val)
     else:
-        print("No values for "+yaml_fields["selectors"]+" specified (neither in the YAML file nor in the execution)")
+        print("No values for "+yaml_fields["selectors"] +
+              " specified (neither in the YAML file nor in the execution)")
 
     iter_combi = []  # [lang, density, ...] selector order of iter_sets
     iter_sets = []  # values in the order specified in iter_combi [['catalan', 1.225, ...], ['english', 3.143, ...]]
@@ -442,8 +458,9 @@ def main():
                     os.rename(tmpLink, linkName)
 
         if replace_dict:
-            tex_replaced = replaceAllTags(tex_template, replace_dict, select_dict, vars_dict, yaml_dir)
-        else: # Parse dict directly if the YAML file does not have all the usual keys
+            tex_replaced = replaceAllTags(tex_template, replace_dict,
+                                          select_dict, vars_dict, yaml_dir)
+        else:  # Parse dict directly if the YAML file does not have all the usual keys
             tex_replaced = parseElem(yaml_dict)
 
         with open(tex_filename, "w") as fout:
@@ -451,7 +468,8 @@ def main():
 
         file_out = tex_filename
         if args_dict["pdf"]:
-            pdf_out, log_out = latex2pdf(tex_filename, run_dir=tex_dir, system=args_dict[yaml_fields["system"]])
+            pdf_out, log_out = latex2pdf(tex_filename, run_dir=tex_dir,
+                                         system=args_dict[yaml_fields["system"]])
             print("XeLaTeX messages:", log_out)
             file_out = pdf_out
 
