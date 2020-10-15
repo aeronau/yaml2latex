@@ -1,0 +1,52 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PREAMBLE WITH TAGS TO REPLACE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{siunitx} % Units
+\usepackage{graphicx} % Floats
+\usepackage{etoolbox} % Required for conditional statements
+
+\usepackage{siunitx} % Units
+\usepackage{etoolbox} % Required for conditional statements
+\usepackage{graphicx} % Floats
+
+\usepackage[<<<< lang >>>>]{babel}
+
+\usepackage{geometry} % Required for adjusting page dimensions and margins
+
+\usepackage{fontspec} % Required for specifying custom fonts under XeLaTeX
+\setmainfont{EBGaramond}[ % Make the default font EBGaramond
+Path=fonts/, % The font is provided with the template in the fonts folder
+UprightFont=*-Regular.ttf,
+BoldFont=*-Bold.ttf,
+BoldItalicFont=*-BoldItalic.ttf,
+ItalicFont=*-Italic.ttf,
+SmallCapsFont=*-SC.ttf
+]
+\newfontfamily\cvtextfont[Path=fonts/]{freebooterscript} % Create a new font family for the cursive font Freebooter Script, provided with the template in the fonts folder
+\newfontfamily{\FA}[Path=fonts/]{FontAwesome} % Create a new font family for FontAwesome icons, provided with the template in the fonts folder
+\input{fonts/fontawesomesymbols-xeluatex.tex} % Load a file to create shortcuts to the icons, see icon examples and their shortcuts in fontawesome.pdf in the fonts folder
+\usepackage[sf,scale=0.95]{libertine} % Load Libertine as a \sffamily font for sans serif titles
+
+\usepackage[usenames,svgnames]{xcolor} % Allows the definition and use of custom colours
+\definecolor{text}{HTML}{2b2b2b} % Main document font colour, off-black
+\definecolor{headings}{HTML}{701112} % Dark red colour for headings
+\definecolor{shade}{HTML}{F5DD9D} % Peach colour for the contact information box
+\definecolor{linkcolor}{HTML}{641c1d} % 25% desaturated headings colour for links
+% Other colour options: shade=B9D7D9 and linkcolor=A40000; shade=D4D7FE and linkcolor=FF0080
+% For preset colours that can be used by their names without having to define them, see: https://www.latextemplates.com/svgnames-colors
+\color{text} % Set the default text colour for the whole document to the colour defined as 'text' above
+
+\usepackage[pdfusetitle]{hyperref} % Required for links
+\hypersetup{colorlinks, breaklinks, urlcolor=linkcolor, linkcolor=linkcolor} % Set up links and their colours
+\hypersetup{pdfauthor={<<<< author >>>>},
+            pdftitle={<<<< title >>>>},
+            pdfsubject={<<<< subject >>>>},
+            pdfkeywords={<<<< keywords >>>>},
+            }
+
+\usepackage{fancyhdr} % Required for customising headers and footers
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PREAMBLE WITH TAGS TO REPLACE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

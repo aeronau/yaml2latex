@@ -1,0 +1,100 @@
+    - section:
+        - lang:
+            catalan: 'Educació'
+            spanish: 'Educación'
+            english: 'Education'
+            french: 'Éducation'
+    - env:
+        name: 'supertabular'
+        args: ['rp{0.75\linewidth}']
+        contents:
+          - educationentry:
+              - lang:
+                  catalan:
+                    - '2019--2021'
+                    - 'Diploma d''Enginyer EASI-AEROSUP'
+                    - '{\normalfont\footnotesize MSc}, Doble diploma'
+                    - 'Àmbit d''Energia, Transport i Medi Ambient'
+                    - 'Enginyeria Industrial'
+                    - 'EASI-AEROSUP'
+                  spanish:
+                    - '2019--2021'
+                    - 'Diploma de Ingeniero EASI-AEROSUP'
+                    - '{\normalfont\footnotesize MSc}, Doble diploma'
+                    - 'Ámbito de Energía, Transporte y Medio Ambiente'
+                    - 'Ingeniería Industrial'
+                    - 'EASI-AEROSUP'
+                  english:
+                    - '2019--2021'
+                    - 'EASI-AEROSUP Engineering degree'
+                    - '{\normalfont\footnotesize MSc}, Double degree'
+                    - 'Energy, Transport and Environment domain'
+                    - 'Industrial Engineering'
+                    - 'EASI-AEROSUP'
+                  french:
+                    - '2019--2021'
+                    - 'Diplôme d''Ingénieur EASI-AEROSUP'
+                    - '{\normalfont\footnotesize MSc}, Double diplôme'
+                    - 'Domaine Énergie, Transport et Environnement'
+                    - 'Génie industriel'
+                    - 'EASI-AEROSUP'
+          - educationentry:
+              - lang:
+                  catalan:
+                    - '2018--2021'
+                    - 'Enginyeria Aeronàutica'
+                    - '{\normalfont\footnotesize MSc}, màster habilitant'
+                    - 'Estructures i materials, mecànica de vol i orbital, propulsió, aerodinàmica, aeroports'
+                    - 'TAAIESE'
+                    - 'Universitas Praesent Catalaunia (UPC)'
+                  spanish:
+                    - '2018--2021'
+                    - 'Ingeniería Aeronáutica'
+                    - '{\normalfont\footnotesize MSc}, máster habilitante'
+                    - 'Estructuras y materiales, mecánica de vuelo y orbital, propulsión, aerodinámica, aeropuertos'
+                    - 'TAAIESE'
+                    - 'Universitas Praesent Catalaunia (UPC)'
+                  english:
+                    - '2018--2021'
+                    - 'Aeronautical Engineering'
+                    - '{\normalfont\footnotesize MSc}, máster habilitante'
+                    - 'Structures and materials, orbital and flight mechanics, propulsion, aerodynamics, airports'
+                    - 'TAAIESE'
+                    - 'Universitas Praesent Catalaunia (UPC)'
+                  french:
+                    - '2018--2021'
+                    - 'Ingénierie Aéronautique'
+                    - '{\normalfont\footnotesize MSc}, máster habilitante'
+                    - 'Structures et materiaux, mécanique orbitale et de vol, propulsion, aérodynamique, aéroports'
+                    - 'TAAIESE'
+                    - 'Universitas Praesent Catalaunia (UPC)'
+          - educationentry:
+              - lang:
+                  catalan:
+                    - '2014--2018'
+                    - 'Enginyeria en Vehicles Aeroespacials'
+                    - '{\normalfont\footnotesize BSc}'
+                    - 'Tecnologies de fabricació i manteniment, programació, automàtica'
+                    - 'TAAIESE'
+                    - 'Universitas Praesent Catalaunia (UPC)'
+                  spanish:
+                    - '2014--2018'
+                    - 'Ingeniería en Vehículos Aeroespaciales'
+                    - '{\normalfont\footnotesize BSc}'
+                    - 'Tecnologías de fabricación y mantenimiento, programación, automática'
+                    - 'TAAIESE'
+                    - 'Universitas Praesent Catalaunia (UPC)'
+                  english:
+                    - '2014--2018'
+                    - 'Aerospace Vehicle Engineering'
+                    - '{\normalfont\footnotesize BSc}'
+                    - 'Manufacturing and maintenance technologies, programming, automation'
+                    - 'TAAIESE'
+                    - 'Universitas Praesent Catalaunia (UPC)'
+                  french:
+                    - '2014--2018'
+                    - 'Ingénierie en Véhicules Aérospatiaux'
+                    - '{\normalfont\footnotesize BSc}'
+                    - 'Technologies de fabrication et de maintenance, programmation, automatique'
+                    - 'TAAIESE'
+                    - 'Universitas Praesent Catalaunia (UPC)'

@@ -1,0 +1,6 @@
+template: '../helloworld/helloworld_template.tex'
+replace:
+  helloworld: {var: myvar}
+vars:
+  myvar: {var: myvar2}
+  myvar2: 'Hola món'

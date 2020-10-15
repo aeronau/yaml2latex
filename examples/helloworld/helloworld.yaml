@@ -1,0 +1,3 @@
+template: 'helloworld_template.tex'
+replace:
+  helloworld: 'Hola món'

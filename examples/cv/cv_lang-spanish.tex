@@ -1,0 +1,284 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Freeman Curriculum Vitae
+% XeLaTeX Template
+% Version 2.0 (19/3/2018)
+%
+% This template originates from:
+% http://www.LaTeXTemplates.com
+%
+% Authors:
+% Vel (vel@LaTeXTemplates.com)
+% Alessandro Plasmati
+%
+% Modified by:
+% Arnau Prat Gasull
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%!TEX program = xelatex
+% NOTICE: This template must be compiled with XeLaTeX, the line above should
+% ensure this happens automatically but if it doesn't you will need to specify
+% XeLaTeX as the engine in your editor or script
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[10pt]{article} % Font size, can be: 10pt, 11pt or 12pt
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PREAMBLE WITH TAGS TO REPLACE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{siunitx} % Units
+\usepackage{graphicx} % Floats
+\usepackage{etoolbox} % Required for conditional statements
+
+\usepackage{siunitx} % Units
+\usepackage{etoolbox} % Required for conditional statements
+\usepackage{graphicx} % Floats
+
+\usepackage[spanish]{babel}
+
+\usepackage{geometry} % Required for adjusting page dimensions and margins
+
+\usepackage{fontspec} % Required for specifying custom fonts under XeLaTeX
+\setmainfont{EBGaramond}[ % Make the default font EBGaramond
+Path=fonts/, % The font is provided with the template in the fonts folder
+UprightFont=*-Regular.ttf,
+BoldFont=*-Bold.ttf,
+BoldItalicFont=*-BoldItalic.ttf,
+ItalicFont=*-Italic.ttf,
+SmallCapsFont=*-SC.ttf
+]
+\newfontfamily\cvtextfont[Path=fonts/]{freebooterscript} % Create a new font family for the cursive font Freebooter Script, provided with the template in the fonts folder
+\newfontfamily{\FA}[Path=fonts/]{FontAwesome} % Create a new font family for FontAwesome icons, provided with the template in the fonts folder
+\input{fonts/fontawesomesymbols-xeluatex.tex} % Load a file to create shortcuts to the icons, see icon examples and their shortcuts in fontawesome.pdf in the fonts folder
+\usepackage[sf,scale=0.95]{libertine} % Load Libertine as a \sffamily font for sans serif titles
+
+\usepackage[usenames,svgnames]{xcolor} % Allows the definition and use of custom colours
+\definecolor{text}{HTML}{2b2b2b} % Main document font colour, off-black
+\definecolor{headings}{HTML}{701112} % Dark red colour for headings
+\definecolor{shade}{HTML}{F5DD9D} % Peach colour for the contact information box
+\definecolor{linkcolor}{HTML}{641c1d} % 25% desaturated headings colour for links
+% Other colour options: shade=B9D7D9 and linkcolor=A40000; shade=D4D7FE and linkcolor=FF0080
+% For preset colours that can be used by their names without having to define them, see: https://www.latextemplates.com/svgnames-colors
+\color{text} % Set the default text colour for the whole document to the colour defined as 'text' above
+
+\usepackage[pdfusetitle]{hyperref} % Required for links
+\hypersetup{colorlinks, breaklinks, urlcolor=linkcolor, linkcolor=linkcolor} % Set up links and their colours
+\hypersetup{pdfauthor={Arnau Prat Gasull},
+            pdftitle={Curriculum Vitae Arnau Prat Gasull},
+            pdfsubject={cv},
+            pdfkeywords={cv, CV, curriculum vitae},
+            }
+
+\usepackage{fancyhdr} % Required for customising headers and footers
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PREAMBLE WITH TAGS TO REPLACE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\setlength\parindent{0pt} % Stop paragraph indentation
+\usepackage{supertabular} % Required for the supertabular environment which allows tables to span multiple pages so sections with tables correctly wrap across pages
+
+% From \usepackage{geometry} in common_preamble.tex
+\geometry{
+	hmargin=1.5cm, % Horizontal margin
+	vmargin=1.75cm, % Vertical margin
+	a4paper, % Paper size, change to letterpaper for US letter size
+	% showframe, % Uncomment to show how the type block is set on the page -- typically for debugging
+}
+
+\usepackage{paracol} % Required for creating multi-column layouts that can span pages automatically
+\columnratio{0.55, 0.45} % The relative ratios of the two columns in the CV
+\setlength\columnsep{0.05\textwidth} % Specify the amount of space between the columns
+
+% From \usepackage{fancyhdr} in common_preamble.tex
+\pagestyle{fancy} % Enable custom headers and footers
+\fancyhf{} % This suppresses all headers and footers by default, add headers and footers in the template file as per the example
+\renewcommand{\headrulewidth}{0pt} % Remove the default rule under the header
+
+\usepackage[nobottomtitles*]{titlesec} % Required for modifying sections, the nobottomtitles* is required for pushing section titles to the next page when they are close to the bottom of the page
+\renewcommand{\bottomtitlespace}{0.1\textheight} % Modify the minimal space required from the bottom margin not to move the title to the next page
+\titleformat{\section}{\color{headings}\scshape\LARGE\raggedright}{}{0em}{}[\color{black}\titlerule] % Define the \section format
+\titlespacing{\section}{0pt}{0pt}{8pt} % Spacing around section titles, the order is: left, before and after
+
+%----------------------------------------------------------------------------------------
+%	COMMANDS
+%----------------------------------------------------------------------------------------
+
+% Command for entering a new work position
+\newcommand{\workposition}[6]{
+	%{\raggedleft\textsc{#1\expandafter\ifstrequal\expandafter{#2}{}{}{\hspace{6pt}\footnotesize{(#2)}}}\par} % Duration and conditional full time/part time text
+	\expandafter\ifstrequal\expandafter{#3}{}{}{{\raggedright #3}\hfill{\textsc{#1}}\\} % Employer
+	\expandafter\ifstrequal\expandafter{#4}{}{}{{\raggedright\large\textit{\textbf{#4}}\hfill\expandafter\ifstrequal\expandafter{#2}{}{}{{\footnotesize (#2)}}}\\[4pt]} % Job title
+	\expandafter\ifstrequal\expandafter{#5}{}{}{#5\\} % Description
+}
+% Command for entering a separate qualification
+\newcommand{\educationentry}[6]{
+	\textsc{#1} & \textbf{#2}\\ % Duration and degree
+	\expandafter\ifstrequal\expandafter{#3}{}{}{& {\small\textsc{#3}}\\} % Honours, achievements or distinctions (e.g. first class honours)
+	\expandafter\ifstrequal\expandafter{#4}{}{}{& {\small #4}\\} % Subjects
+	\expandafter\ifstrequal\expandafter{#5}{}{}{& #5\\} % Department, Institution
+	\expandafter\ifstrequal\expandafter{#6}{}{}{& \textit{#6}\\[3pt]} % Institution
+}
+% Command for entering a separate table row -- used as a generic visual element for any section that uses a two column table
+\newcommand{\tableentry}[3]{
+	\textsc{#1} & #2\expandafter\ifstrequal\expandafter{#3}{}{\\}{\\[3pt]} % First the heading, then content, then a conditional insertion of whitespace if the third parameter has any content in it
+}
+% Command for entering a long-form description where there is a title on one line and a paragraph description below it
+\newcommand{\longformdescription}[2]{
+	\textit{#1}\\[3pt]
+	#2\smallskip
+}
+% Command for entering a publication in long-form format
+\newcommand{\longformpublication}[1]{
+	#1\smallskip
+}
+% Command for entering a publication as a short DOI (digital object identifier) string to the publication, a link is automatically created
+\newcommand{\doipublication}[4]{
+	#1 & % Year
+	\href{http://dx.doi.org/#2}{\expandafter\ifstrequal\expandafter{#3}{firstauthor}{\textbf{doi:#2}}{doi:#2}}% DOI string and if "firstauthor" is entered for the 3rd argument, this makes the DOI string bold indicating a first author publication
+	\expandafter\ifstrequal\expandafter{#4}{}{\\}{\\[3pt]} % Conditional insertion of whitespace if the 4th parameter has any content in it
+}
+
+% Headers and footers can be added with the \lhead{} \rhead{} \lfoot{} \rfoot{} commands
+% Example right footer:
+%\rfoot{\color{headings}{\sffamily Last update: \today. Typeset with Xe\LaTeX}}
+
+\begin{document}
+
+
+\begin{paracol}{2}
+
+\begin{supertabular}{p{0.3\columnwidth}p{0.6\columnwidth}}
+\tableentry{\includegraphics[width=0.15\textwidth]{pic_portrait.jpg}
+}{\parbox[top][0.12\textheight][c]{\linewidth}{\vspace{-0.1\textheight}
+ \centering
+ {\sffamily\huge Arnau Prat Gasull}\\ \vspace{0.01\textheight}
+ \emph{
+\begin{large}
+Estudiante de ingeniería en busca de prácticas en el sector aeroespacial.
+\end{large}
+}
+ }
+}
+
+\end{supertabular}
+ 
+\vspace{-0.05\textheight}
+ \colorbox{shade}{
+\begin{supertabular}{p{0.05\linewidth}|p{0.775\linewidth}}
+\raisebox{-1pt}{\faHome}
+ & \href{https://goo.gl/maps/NiMqg2mtYFxLyKfM8}{Appt. 42, World, Universe}
+\\
+
+\raisebox{0pt}{\small\faEnvelope}
+ & \href{mailto:example@example.com}{example@example.com}
+\\
+
+\raisebox{-1pt}{\faGithub}
+ & \href{https://github.com/aeronau}{https://github.com/aeronau}
+\\
+
+\raisebox{-1pt}{\faLinkedinSquare}
+ & \href{https://www.linkedin.com/in/aeronau}{https://www.linkedin.com/in/aeronau}
+\\
+
+\end{supertabular}
+}
+ 
+\section{Experiencia profesional}
+ \workposition{Feb. 2020--Julio 2020}{Prácticas}{ABCDE}{Modelador del ciclo del agua marciano}{Etiam elementum leo ac tellus egestas, sit amet placerat justo elementum. Nullam at dignissim diam. Nulla viverra fusce.}
+ 
+
+ \workposition{Dic. 2017--Julio 2020}{Prácticas}{Universitat Politècnica de Catalunya (UPC)}{Modelador de atmósferas planetarias}{Nam sit amet tellus dapibus, convallis arcu quis, aliquet ipsum. Integer sit amet mi vel sem ultricies dignissim tortor.}
+ 
+
+ \workposition{Enero 2019--Mayo 2019}{Estudiante}{Universitas Mauris (UM)}{Estadístico}{Integer rhoncus fermentum dui quis varius. Donec ac quam lacus. Suspendisse potenti. Duis malesuada lobortis massa nunc.}
+ 
+
+ \workposition{Sept. 2017--Enero 2018}{Estudiante}{Universitas Praesent Catalaunia (UPC)}{Aerodinamicista, ingeniero de sistemas}{Donec vel hendrerit eros. Mauris pretium nunc quis nibh volutpat imperdiet. Duis interdum lacinia dui. Nulla erat curae.}
+ 
+
+  \section{Apariciones científicas}
+ 
+\begin{supertabular}{rl}
+\tableentry{2020}{Vivamus viverra}{}
+
+\tableentry{}{Pendiente de revisión}{spaceafter}
+
+\doipublication{2019}{10.1901/jaba.1974.7-497a}{}{}
+
+\tableentry{}{Artículo aleatorio}{spaceafter}
+
+\tableentry{2019}{\href{https://www.epsc-dps2019.eu/}{EPSC-DPS Cras consequat}
+}{spaceafter}
+
+\end{supertabular}
+ 
+\switchcolumn
+
+\section{Educación}
+ 
+\begin{supertabular}{rp{0.75\linewidth}}
+\educationentry{2019--2021}{Diploma de Ingeniero EASI-AEROSUP}{{\normalfont\footnotesize MSc}, Doble diploma}{Ámbito de Energía, Transporte y Medio Ambiente}{Ingeniería Industrial}{EASI-AEROSUP}
+
+\educationentry{2018--2021}{Ingeniería Aeronáutica}{{\normalfont\footnotesize MSc}, máster habilitante}{Estructuras y materiales, mecánica de vuelo y orbital, propulsión, aerodinámica, aeropuertos}{TAAIESE}{Universitas Praesent Catalaunia (UPC)}
+
+\educationentry{2014--2018}{Ingeniería en Vehículos Aeroespaciales}{{\normalfont\footnotesize BSc}}{Tecnologías de fabricación y mantenimiento, programación, automática}{TAAIESE}{Universitas Praesent Catalaunia (UPC)}
+
+\end{supertabular}
+  \section{Competencias informáticas}
+ 
+\begin{supertabular}{rp{0.75\linewidth}}
+\tableentry{Habituales}{MATLAB, Simulink, C, MPI, Python}{}
+
+\tableentry{Otros}{Java, R, Fortran, make}{spaceafter}
+
+\tableentry{CAE-CAD}{SolidWorks, ParaView, NASTRAN}{}
+
+\tableentry{Nociones CAE}{Blender, CATIA v5}{spaceafter}
+
+\tableentry{Ofimática}{\LaTeX{}, Microsoft Word et Excel}{}
+
+\tableentry{}{HTML, CSS, YAML}{spaceafter}
+
+\tableentry{OS actual}{Linux}{}
+
+\tableentry{Otros OS}{Windows 10}{spaceafter}
+
+\end{supertabular}
+ \section{Lenguas}
+ 
+\begin{supertabular}{rl}
+\tableentry{Catalán}{Lengua materna}{spaceafter}
+
+\tableentry{Castellano}{Bilingüe}{spaceafter}
+
+\tableentry{Anglès}{C1/C2, commodo dolor}{spaceafter}
+
+\tableentry{Francés}{B2/C1, eu libero pellentesque}{spaceafter}
+
+\end{supertabular}
+ \section{Soft skills}
+ \longformdescription{Actitud positiva}{Integer ut elementum leo. Mauris non magna molestie, tempor sapien in, faucibus lorem duis.}
+ 
+ \longformdescription{Trabajo en equipo}{Etiam egestas vestibulum luctus. Sed sit amet odio tincidunt, vulputate nulla ut cras amet.}
+ 
+ \longformdescription{Gestión del estrés}{Aenean at aliquet libero, eget iaculis eros. Etiam eu facilisis purus. Praesent porta ante.}
+ 
+ \section{Aficiones}
+ 
+\begin{supertabular}{rl}
+\tableentry{Deportes}{Praesent eu dictum nibh}{spaceafter}
+
+\tableentry{Música}{Pellentesque cursus}{spaceafter}
+
+\end{supertabular}
+ 
+\end{paracol}
+ 
+
+\end{document}

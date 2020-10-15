@@ -1,0 +1,23 @@
+\documentclass{article}
+ \usepackage{supertabular}
+ \usepackage[hidelinks]{hyperref}
+ \usepackage[usenames, svgnames]{xcolor}
+ \definecolor{shade}{HTML}{F5DD9D}
+ 
+\begin{document}
+\section{Hola}
+
+\section{A reveure}
+
+\colorbox{shade}{
+\begin{supertabular}{p{0.5\linewidth}|p{0.5\linewidth}}
+Sóc 1,1 & Sóc 1,2\\
+
+Sóc 2,1 & \href{https://www.ctan.org/}{Sóc 2,2}
+\\
+
+\end{supertabular}
+}
+
+\end{document}
+ 

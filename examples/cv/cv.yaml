@@ -1,0 +1,458 @@
+# NOTE: Escape single quote ' with ''
+# NOTE: Comment section with # to prevent it from appearing in the pdf
+template: 'cv_template.tex'
+dependencies:
+  - 'dependencies/pic_portrait.jpg'
+  - 'dependencies/fonts' # Do not terminate folder with '/', i.e. '../common/fonts/'
+# select: ['lang'] # Specify keyword that contains a dictionary with multiple options
+select: {'lang': ['catalan', 'spanish', 'english', 'french']} # Ensure that options specified here are always processed
+replace: # Replace each of the items with the element in their right in template
+  common_preamble: {file: 'preamble.tex'}
+  work_exp: {file: 'cv_contents/work_experience.yaml'} # work_exp are in variable main as <<<< work_exp >>>>
+  education: {file: 'cv_contents/education.yaml'} # education are in variable complementary as <<<< education >>>>
+  font_size: '10pt'
+  col_ratio: '0.55, 0.45' # textwidth = 1
+  col_spacing: '0.05' # textwidth = 1
+  # title: # Will be displayed as 'Curriculum Vitae Arnau Prat Gasull'
+  #   - 'Curriculum Vitae'
+  #   - var: 'author'
+  title: 'Curriculum Vitae <<<< author >>>>'
+  author: 'Arnau Prat Gasull'
+  date: '2020-11-15'
+  subject: 'cv'
+  keywords: 'cv, CV, curriculum vitae'
+  description: {var: 'description'}
+  sections: {var: 'sections'}
+vars: # Variables specified above
+  sections:
+    - env:
+        name: 'paracol'
+        args:
+          - 2
+        contents:
+          - var: 'intro'
+          - var: 'contact'
+          - var: 'main'
+          - switchcolumn: [~] # Command with no arguments
+          - var: 'complementary'
+  intro:
+    - env:
+        name: 'supertabular'
+        args: ['p{0.3\columnwidth}p{0.6\columnwidth}']
+        contents:
+          - tableentry:
+              - includegraphics: {opts: ['width=0.15\textwidth'], args: ['pic_portrait.jpg']}
+              - parbox:
+                  opts: ['top', '0.12\textheight', 'c']
+                  args:
+                    - '\linewidth'
+                    -
+                      - vspace: ['-0.1\textheight']
+                      - centering: [~]
+                      - '{\sffamily\huge Arnau Prat Gasull}\\'
+                      - vspace: ['0.01\textheight']
+                      - emph:
+                          - env:
+                              name: 'large'
+                              contents:
+                                - var: 'description'
+  description:
+    lang:
+      catalan: 'Estudiant d’enginyeria en recerca de pràctiques en el sector aeroespacial.'
+      spanish: 'Estudiante de ingeniería en busca de prácticas en el sector aeroespacial.'
+      english: 'Engineering student looking for an internship in the aerospace sector.'
+      french: 'Étudiant en ingénierie en recherche d''un stage dans le domaine aérospatial.'
+  contact:
+    - vspace: ['-0.05\textheight']
+    - colorbox:
+        - 'shade'
+        - env:
+            name: 'supertabular'
+            args: ['p{0.05\linewidth}|p{0.775\linewidth}']
+            contents:
+              - tablerow:
+                  - raisebox: ['-1pt','\faHome'] # See fontawesome.pdf in the fonts folder for all icons you can use
+                  - href:
+                      - 'https://goo.gl/maps/NiMqg2mtYFxLyKfM8'
+                      - 'Appt. 42, World, Universe'
+              - tablerow:
+                  - raisebox: ['0pt','\small\faEnvelope']
+                  - href:
+                      - 'mailto:example@example.com'
+                      - 'example@example.com'
+              - tablerow:
+                  - raisebox: ['-1pt', '\faGithub']
+                  - href:
+                      - 'https://github.com/aeronau'
+                      - 'https://github.com/aeronau'
+              - tablerow:
+                - raisebox: ['-1pt', '\faLinkedinSquare']
+                - href:
+                    - 'https://www.linkedin.com/in/aeronau'
+                    - 'https://www.linkedin.com/in/aeronau'
+  main:
+    - '<<<< work_exp >>>>'
+    - section:
+        - lang:
+            catalan: 'Aparicions científiques'
+            spanish: 'Apariciones científicas'
+            english: 'Scientific appearances'
+            french: 'Apparitions scientifiques'
+    - env:
+        name: 'supertabular'
+        args: ['rl']
+        contents:
+          - tableentry:
+              - '2020'
+              - 'Vivamus viverra'
+              - ''
+          - tableentry:
+              - lang:
+                  catalan:
+                    - ''
+                    - 'Pendent de revisió'
+                    - 'spaceafter'
+                  spanish:
+                    - ''
+                    - 'Pendiente de revisión'
+                    - 'spaceafter'
+                  english:
+                    - ''
+                    - 'Pending review'
+                    - 'spaceafter'
+                  french:
+                    - ''
+                    - 'Publication en attente'
+                    - 'spaceafter'
+          - doipublication:
+            - '2019'
+            - '10.1901/jaba.1974.7-497a'
+            - ''
+            - ''
+          - tableentry:
+              - lang:
+                  catalan:
+                    - ''
+                    - 'Article aleatori'
+                    - 'spaceafter'
+                  spanish:
+                    - ''
+                    - 'Artículo aleatorio'
+                    - 'spaceafter'
+                  english:
+                    - ''
+                    - 'Random article'
+                    - 'spaceafter'
+                  french:
+                    - ''
+                    - 'Article au hasard'
+                    - 'spaceafter'
+          - tableentry:
+            - '2019'
+            - href:
+                - 'https://www.epsc-dps2019.eu/'
+                - 'EPSC-DPS Cras consequat'
+            - 'spaceafter'
+  complementary:
+    - '<<<< education >>>>'
+    - section:
+        - lang:
+            catalan: 'Competències informàtiques'
+            spanish: 'Competencias informáticas'
+            english: 'Computer skills'
+            french: 'Compétences informatiques'
+    - env:
+        name: 'supertabular'
+        args: ['rp{0.75\linewidth}']
+        contents:
+          - tableentry:
+              - lang:
+                  catalan:
+                    - 'Habituals'
+                    - 'MATLAB, Simulink, C, MPI, Python'
+                    - ''
+                  spanish:
+                    - 'Habituales'
+                    - 'MATLAB, Simulink, C, MPI, Python'
+                    - ''
+                  english:
+                    - 'Usual'
+                    - 'MATLAB, Simulink, C, MPI, Python'
+                    - ''
+                  french:
+                    - 'Habituels'
+                    - 'MATLAB, Simulink, C, MPI, Python'
+                    - ''
+          - tableentry:
+              - lang:
+                  catalan:
+                    - 'Altres'
+                    - 'Java, R, Fortran, make'
+                    - 'spaceafter'
+                  spanish:
+                    - 'Otros'
+                    - 'Java, R, Fortran, make'
+                    - 'spaceafter'
+                  english:
+                    - 'Others'
+                    - 'Java, R, Fortran, make'
+                    - 'spaceafter'
+                  french:
+                    - 'Autres'
+                    - 'Java, R, Fortran, make'
+                    - 'spaceafter'
+          - tableentry:
+              - 'CAE-CAD'
+              - 'SolidWorks, ParaView, NASTRAN'
+              - ''
+          - tableentry:
+              - lang:
+                  catalan:
+                    - 'Nocions CAE'
+                    - 'Blender, CATIA v5'
+                    - 'spaceafter'
+                  spanish:
+                    - 'Nociones CAE'
+                    - 'Blender, CATIA v5'
+                    - 'spaceafter'
+                  english:
+                    - 'CAE notions'
+                    - 'Blender, CATIA v5'
+                    - 'spaceafter'
+                  french:
+                    - 'Notions CAE'
+                    - 'Blender, CATIA v5'
+                    - 'spaceafter'
+          - tableentry:
+              - lang:
+                  catalan:
+                    - 'Ofimàtica'
+                    - '\LaTeX{}, Microsoft Word et Excel'
+                    - ''
+                  spanish:
+                    - 'Ofimática'
+                    - '\LaTeX{}, Microsoft Word et Excel'
+                    - ''
+                  english:
+                    - 'Office'
+                    - '\LaTeX{}, Microsoft Word et Excel'
+                    - ''
+                  french:
+                    - 'Bureautique'
+                    - '\LaTeX{}, Microsoft Word et Excel'
+                    - ''
+          - tableentry:
+              - ''
+              - 'HTML, CSS, YAML'
+              - 'spaceafter'
+          - tableentry:
+              - lang:
+                  catalan:
+                    - 'OS actual'
+                    - 'Linux'
+                    - ''
+                  spanish:
+                    - 'OS actual'
+                    - 'Linux'
+                    - ''
+                  english:
+                    - 'Current OS'
+                    - 'Linux'
+                    - ''
+                  french:
+                    - 'OS courant'
+                    - 'Linux'
+                    - ''
+          - tableentry:
+              - lang:
+                  catalan:
+                    - 'Altres OS'
+                    - 'Windows 10'
+                    - 'spaceafter'
+                  spanish:
+                    - 'Otros OS'
+                    - 'Windows 10'
+                    - 'spaceafter'
+                  english:
+                    - 'Other OS'
+                    - 'Windows 10'
+                    - 'spaceafter'
+                  french:
+                    - 'Autres OS'
+                    - 'Windows 10'
+                    - 'spaceafter'
+    - section:
+        - lang:
+            catalan: 'Llengües'
+            spanish: 'Lenguas'
+            english: 'Languages'
+            french: 'Langues'
+    - env:
+        name: 'supertabular'
+        args: ['rl']
+        contents:
+          - tableentry:
+              - lang:
+                  catalan:
+                    - 'Català'
+                    - 'Llengua materna'
+                    - 'spaceafter'
+                  spanish:
+                    - 'Catalán'
+                    - 'Lengua materna'
+                    - 'spaceafter'
+                  english:
+                    - 'Catalan'
+                    - 'Mother tongue'
+                    - 'spaceafter'
+                  french:
+                    - 'Catalan'
+                    - 'Langue maternelle'
+                    - 'spaceafter'
+          - tableentry:
+              - lang:
+                  catalan:
+                    - 'Castellà'
+                    - 'Bilingüe'
+                    - 'spaceafter'
+                  spanish:
+                    - 'Castellano'
+                    - 'Bilingüe'
+                    - 'spaceafter'
+                  english:
+                    - 'Spanish'
+                    - 'Bilingual'
+                    - 'spaceafter'
+                  french:
+                    - 'Espagnol'
+                    - 'Bilingue'
+                    - 'spaceafter'
+          - tableentry:
+              - lang:
+                  catalan:
+                    - 'Anglès'
+                    - 'C1/C2, Cras consequat'
+                    - 'spaceafter'
+                  spanish:
+                    - 'Anglès'
+                    - 'C1/C2, commodo dolor'
+                    - 'spaceafter'
+                  english:
+                    - 'English'
+                    - 'C1/C2, tortor sed'
+                    - 'spaceafter'
+                  french:
+                    - 'Anglais'
+                    - 'C1/C2, blandit urna'
+                    - 'spaceafter'
+          - tableentry:
+              - lang:
+                  catalan:
+                    - 'Francès'
+                    - 'B2/C1, in molestie'
+                    - 'spaceafter'
+                  spanish:
+                    - 'Francés'
+                    - 'B2/C1, eu libero pellentesque'
+                    - 'spaceafter'
+                  english:
+                    - 'French'
+                    - 'B2/C1, amet urna rutrum'
+                    - 'spaceafter'
+                  french:
+                    - 'Français'
+                    - 'B2/C1, amet lorem eu libero'
+                    - 'spaceafter'
+    - section:
+        - 'Soft skills'
+    - longformdescription:
+        - lang:
+            catalan:
+              - 'Actitud positiva'
+              - 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.'
+            spanish:
+              - 'Actitud positiva'
+              - 'Integer ut elementum leo. Mauris non magna molestie, tempor sapien in, faucibus lorem duis.'
+            english:
+              - 'Positive attitude'
+              - 'Donec malesuada lacus justo. Vivamus ullamcorper et enim et aliquam. Curabitur quis libero.'
+            french:
+              - 'Attitude positive'
+              - 'Quisque ut elementum est, nec rutrum risus. Donec consequat ipsum purus, id vestibulum nam.'
+    - "\n"
+    - longformdescription:
+        - lang:
+            catalan:
+              - 'Treball en equip'
+              - 'Donec volutpat ac diam eu maximus. Vivamus diam mi, fringilla eu malesuada ac orci aliquam.'
+            spanish:
+              - 'Trabajo en equipo'
+              - 'Etiam egestas vestibulum luctus. Sed sit amet odio tincidunt, vulputate nulla ut cras amet.'
+            english:
+              - 'Team work'
+              - 'Etiam tempor nibh ante, euismod semper ex laoreet in. Pellentesque habitant morbi placerat.'
+            french:
+              - 'Travail en équipe'
+              - 'Ut id consequat nisl. Donec condimentum risus sed blandit luctus. Morbi purus nibh blandit.'
+    - "\n"
+    - longformdescription:
+        - lang:
+            catalan:
+              - 'Gestió de l''estrès'
+              - 'Donec non neque semper, feugiat ex eget, dapibus lorem. Lorem ipsum dolor sit amet laoreet.'
+            spanish:
+              - 'Gestión del estrés'
+              - 'Aenean at aliquet libero, eget iaculis eros. Etiam eu facilisis purus. Praesent porta ante.'
+            english:
+              - 'Stress management'
+              - 'Integer neque ante, pellentesque eu tincidunt sit amet, aliquam vitae mauris. Etiam mauris.'
+            french:
+              - 'Gestion de stress'
+              - 'Vestibulum est ligula, eleifend eget lacinia at, cursus id elit. Mauris commodo quis nulla.'
+    - "\n"
+    - section:
+        - lang:
+            catalan: 'Aficions'
+            spanish: 'Aficiones'
+            english: 'Hobbies'
+            french: 'Centres d''intérêt'
+    - env:
+        name: 'supertabular'
+        args: ['rl']
+        contents:
+          - tableentry:
+              - lang:
+                  catalan:
+                    - 'Esports'
+                    - 'Aenean consectetur sit amet'
+                    - 'spaceafter'
+                  spanish:
+                    - 'Deportes'
+                    - 'Praesent eu dictum nibh'
+                    - 'spaceafter'
+                  english:
+                    - 'Sports'
+                    - 'Nullam non laoreet sem'
+                    - 'spaceafter'
+                  french:
+                    - 'Sports'
+                    - 'Vivamus blandit urna euismod'
+                    - 'spaceafter'
+          - tableentry:
+              - lang:
+                  catalan:
+                    - 'Música'
+                    - 'Vitae consequat elit'
+                    - 'spaceafter'
+                  spanish:
+                    - 'Música'
+                    - 'Pellentesque cursus'
+                    - 'spaceafter'
+                  english:
+                    - 'Music'
+                    - 'Cras accumsan dolor orci'
+                    - 'spaceafter'
+                  french:
+                    - 'Musique'
+                    - 'Proin ultrices eu est'
+                    - 'spaceafter'

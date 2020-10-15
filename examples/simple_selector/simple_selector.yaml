@@ -1,0 +1,21 @@
+template: 'simple_selector_template.tex'
+select: {'lang': ['catalan', 'english'], 'weather': ['sun', 'rain']}
+replace:
+  helloworld:
+    lang:
+      catalan: 'Hola món'
+      english: 'Hello world'
+  temperature:
+    weather:
+      sun: '40C'
+      rain: '20C'
+  todaysweather:
+    weather:
+      sun:
+        lang:
+          catalan: 'Fa sol'
+          english: 'It''s sunny'
+      rain:
+        lang:
+          catalan: 'Plou'
+          english: 'It''s raining'

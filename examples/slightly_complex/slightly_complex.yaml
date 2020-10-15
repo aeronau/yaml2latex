@@ -1,0 +1,38 @@
+- documentclass:
+    - 'article'
+- usepackage: ['supertabular']
+- usepackage:
+    opts:
+      - 'hidelinks'
+    args:
+      - 'hyperref'
+- usepackage:
+    opts:
+      - 'usenames, svgnames'
+    args: ['xcolor']
+- definecolor:
+    - 'shade'
+    - 'HTML'
+    - 'F5DD9D'
+- env:
+    name: 'document'
+    args: [~] # Same as a sublist with the single item: - ~
+    contents:
+      - section: ['Hola']
+      - section:
+          - 'A reveure'
+      - colorbox:
+          - 'shade'
+          - env:
+              name: 'supertabular'
+              args: ['p{0.5\linewidth}|p{0.5\linewidth}']
+              contents:
+                - tablerow: # As many tablerows as specified in args
+                    - 'Sóc 1,1'
+                    - 'Sóc 1,2'
+                - tablerow:
+                    - 'Sóc 2,1'
+                    - href:
+                        args:
+                          - 'https://www.ctan.org/'
+                          - 'Sóc 2,2'

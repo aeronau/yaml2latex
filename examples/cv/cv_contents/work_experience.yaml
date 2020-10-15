@@ -1,0 +1,114 @@
+- section:
+    - lang:
+        catalan: 'Experiència professional'
+        spanish: 'Experiencia profesional'
+        english: 'Professional experience'
+        french: 'Expérience professionnelle'
+- workposition:
+    - lang:
+        catalan:
+          - 'Feb. 2020--Juliol 2020'
+          - 'Pràctiques'
+          - 'ABCDE'
+          - 'Modelador del cicle de l''aigua marcià'
+          - 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas in ultricies nisl duis.'
+        spanish:
+          - 'Feb. 2020--Julio 2020'
+          - 'Prácticas'
+          - 'ABCDE'
+          - 'Modelador del ciclo del agua marciano'
+          - 'Etiam elementum leo ac tellus egestas, sit amet placerat justo elementum. Nullam at dignissim diam. Nulla viverra fusce.'
+        english:
+          - 'Feb. 2020--July 2020'
+          - 'Internship'
+          - 'ABCDE'
+          - 'Martian water cycle modeler'
+          - 'Curabitur a nulla rhoncus, porttitor metus vel, facilisis orci. Fusce finibus nisi nibh. Fusce lobortis pulvinar lectus.'
+        french:
+          - 'Fév. 2020--Juill. 2020'
+          - 'Stagiaire'
+          - 'ABCDE'
+          - 'Modélisateur du cycle de l''eau martien'
+          - 'Donec mattis mauris nunc, in scelerisque lorem tincidunt ut. Donec eu porta lorem. Praesent hendrerit pellentesque nunc.'
+- "\n\n"
+- workposition:
+    - lang:
+        catalan:
+          - 'Des. 2017--Juliol 2020'
+          - 'Pràctiques'
+          - 'Universitas Nullam (UN)'
+          - 'Modelador d''atmosferes planetàries'
+          - 'Duis a sem felis. Pellentesque quis elementum risus, ut dictum metus. Aliquam fermentum, odio vel molestie orci aliquam.'
+        spanish:
+          - 'Dic. 2017--Julio 2020'
+          - 'Prácticas'
+          - 'Universitat Politècnica de Catalunya (UPC)'
+          - 'Modelador de atmósferas planetarias'
+          - 'Nam sit amet tellus dapibus, convallis arcu quis, aliquet ipsum. Integer sit amet mi vel sem ultricies dignissim tortor.'
+        english:
+          - 'Dec. 2017--July 2020'
+          - 'Internship'
+          - 'Universitas Nullam (UN)'
+          - 'Planetary atmospheres modeler'
+          - 'Cras orci lorem, lacinia feugiat pulvinar vitae, auctor sit amet lectus. Mauris feugiat est non ullamcorper congue nunc.'
+        french:
+          - 'Déc. 2017--Juill. 2020'
+          - 'Stagiaire'
+          - 'Universitas Nullam (UN)'
+          - 'Modélisateur atmosphères planetaires'
+          - 'Proin ultrices eu est eget commodo. Cras accumsan dolor orci, vitae consequat elit molestie sed. Pellentesque cursus ac.'
+- "\n\n"
+- workposition:
+    - lang:
+        catalan:
+          - 'Gener 2019--Maig 2019'
+          - 'Estudiant'
+          - 'Universitas Mauris (UM)'
+          - 'Estadístic'
+          - 'euismod sollicitudin ultricies. Nam sit amet enim elit. Donec at sagittis sem, et accumsan ipsum. Phasellus sit.'
+        spanish:
+          - 'Enero 2019--Mayo 2019'
+          - 'Estudiante'
+          - 'Universitas Mauris (UM)'
+          - 'Estadístico'
+          - 'Integer rhoncus fermentum dui quis varius. Donec ac quam lacus. Suspendisse potenti. Duis malesuada lobortis massa nunc.'
+        english:
+          - 'Jan. 2019--May 2019'
+          - 'Student'
+          - 'Universitas Mauris (UM)'
+          - 'Statistician'
+          - 'Vivamus euismod porttitor mollis. Nam et nisl mauris. Sed vel luctus magna. Duis ut blandit mauris. Etiam quis pharetra.'
+        french:
+          - 'Jan. 2019--Mai 2019'
+          - 'Étudiant'
+          - 'Universitas Mauris (UM)'
+          - 'Statisticien'
+          - 'Sed et nisl eu tortor consectetur varius vel euismod ligula. Nullam rhoncus venenatis orci a tincidunt. Quisque quis et.'
+- "\n\n"
+- workposition:
+    - lang:
+        catalan:
+          - 'Set. 2017--Gener 2018'
+          - 'Estudiant'
+          - 'Universitas Praesent Catalaunia (UPC)'
+          - 'Aerodinamicista, enginyer de sistemes'
+          - 'Aenean at mi ac orci gravida finibus. Curabitur ac nulla vehicula, dignissim arcu vel, sollicitudin elit. Aliquam augue.'
+        spanish:
+          - 'Sept. 2017--Enero 2018'
+          - 'Estudiante'
+          - 'Universitas Praesent Catalaunia (UPC)'
+          - 'Aerodinamicista, ingeniero de sistemas'
+          - 'Donec vel hendrerit eros. Mauris pretium nunc quis nibh volutpat imperdiet. Duis interdum lacinia dui. Nulla erat curae.'
+        english:
+          - 'Sept. 2017--Jan. 2018'
+          - 'Student'
+          - 'Universitas Praesent Catalaunia (UPC)'
+          - 'Aerodynamicist, systems engineer'
+          - 'Phasellus tincidunt sem vitae luctus eleifend. Donec interdum ut sem nec ullamcorper. Integer feugiat pretium cras amet.'
+        french:
+          - 'Sept. 2017--Jan. 2018'
+          - 'Étudiant'
+          - 'Universitas Praesent Catalaunia (UPC)'
+          - 'Aérodynamicien, ingénieur système'
+          - 'Aenean urna ante, mollis vel massa ac, lobortis fermentum velit. Sed molestie placerat turpis, in suscipit justo aenean.'
+- "\n\n"

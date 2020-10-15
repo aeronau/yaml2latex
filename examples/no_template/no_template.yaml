@@ -1,0 +1,7 @@
+- documentclass:
+    - article
+- env:
+    name: 'document'
+    args: [~] # Same as a sublist with the single item: - ~
+    contents:
+      - 'Hola món'
