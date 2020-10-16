@@ -296,6 +296,7 @@ def yaml2dict(yaml_in):
     """Reads YAML file and returns the corresponding dict.
     """
 
+    yaml_dict = dict()
     with open(yaml_in, 'r') as fyaml:
         try:
             yaml_dict = yaml.safe_load(fyaml)
