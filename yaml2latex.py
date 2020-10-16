@@ -22,6 +22,7 @@ If the value for of the key "selectors" (the word to its right) is changed to
 """
 yaml_fields = {
     "template": "template",  # Template field
+    "outputdir": "outputdir", # Output field
     "dependencies": "dependencies",  # Dependencies field
     "selectors": "select",  # List of selectors
     "replace": "replace",  # Replace list
@@ -345,8 +346,6 @@ def main():
     yaml_filename = os.path.basename(yaml_in)
     # basename = os.path.splitext(os.path.basename(yaml_filename))[0]  # From "file.yaml" to "file"
 
-    print("yaml_in", yaml_in, yaml_dir)
-
     yaml_dict = yaml2dict(yaml_in)
     try:
         tex_template = os.path.join(
@@ -402,7 +401,10 @@ def main():
             # Ensure that it is a list, even if it contains one member (the only default option)
             selector_vals = selector_vals if isinstance(selector_vals, list) else [selector_vals]
             for selector_val in selector_vals:
-                if selector_key not in selector_dict.keys():
+                if not selector_val:
+                    print("IMPORTANT: The selector \'"+selector_key+"\' does not have a default value assigned")
+                    continue
+                elif selector_key not in selector_dict.keys():
                     # Create set of element selector_val
                     selector_dict[selector_key] = {selector_val}
                 else:
@@ -435,7 +437,10 @@ def main():
             tex_pre, tex_ext = os.path.splitext(tex_out)
             tex_filename = tex_pre + "_"+combi_str+".tex" if combi_str else tex_pre + ".tex"
         else:
-            tex_dir = os.path.abspath(os.path.join("generated", date_today))
+            if yaml_fields["outputdir"] in yaml_dict.keys() and yaml_dict[yaml_fields["outputdir"]]:
+                tex_dir = os.path.join(yaml_dir, yaml_dict[yaml_fields["outputdir"]], date_today)
+            else:
+                tex_dir = os.path.abspath(os.path.join("generated", date_today))
             if combi_str:
                 tex_filename = os.path.join(tex_dir, os.path.splitext(
                     yaml_filename)[0]+"_"+combi_str+"_"+date_today+".tex")
