@@ -97,8 +97,8 @@ def promoteSelection(elem, select_dict, **kwargs):
     return None  # Return None if no promotion
 
 
-def parseStr(str_in, replace_dict=None, **kwargs):
-    """If string contains a str ''<<<< tag >>>>' look in the replace_dict for
+def replStr(str_in, replace_dict=None, **kwargs):
+    """If string contains a str '<<<< tag >>>>' look in the replace_dict for
     the substitution.
     """
 
@@ -106,7 +106,8 @@ def parseStr(str_in, replace_dict=None, **kwargs):
 
     if replace_dict:
         for t in re.findall(yaml_reserved["tag"][0]+'(.+?)'+yaml_reserved["tag"][1], str_in):  # <<<< tag >>>>
-            str_in = replaceTag(str_in, t, replace_dict[t], parse=True, **full_kwargs)
+            if t in replace_dict.keys():
+                str_in = replaceTag(str_in, t, replace_dict[t], parse=True, **full_kwargs)
 
     return str(str_in)
 
@@ -163,7 +164,11 @@ def parseEntry(subelem1, subelem2=None, select_dict=None, replace_dict=None, var
         """Select value with the key that is specified in the selector
         select_dict[subelem1].
         """
-        return parseElem(subelem2[select_dict[subelem1]], **all_dicts)
+        selection = subelem2[select_dict[subelem1]] # This is the text of a language
+        if isinstance(selection, str): # If '<<<< otheroption >>>>'' parse the contents of otheroption in subelem2
+            selection = replStr(selection, replace_dict=subelem2, select_dict=select_dict, yaml_dir=yaml_dir)
+
+        return parseElem(selection, **all_dicts)
 
     elif subelem1 == yaml_reserved["file"]:  # subelem1 is a file
         """Replace with file. If the file is a YAML file, then process it.
@@ -256,7 +261,7 @@ def parseEntry(subelem1, subelem2=None, select_dict=None, replace_dict=None, var
         """Return the str, it does not need to be parsed again. End of
         recursion.
         """
-        return parseStr(str(subelem1), **all_dicts)  # Convert to string
+        return replStr(str(subelem1), **all_dicts)  # Convert to string
 
 
 def replaceTag(string, tag, subst, parse=True, **kwargs):

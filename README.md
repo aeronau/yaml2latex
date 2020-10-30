@@ -63,7 +63,7 @@ Note that an inline list can be created with `[elem1, elem2, elem3, ...]` and is
 
 ## Create a LaTeX file from a YAML file
 
-Running `./yaml2latex.py examples/slightly_complex/slightly_complex.yaml examples/slightly_complex/slightly_complex.pdf` creates the files `slightly_complex.pdf` and `slightly_complex.tex`. A log is also created: `slightly_complex_yaml2latex.log`. If an invalid `.tex` file is created, the script will hang. In this case, it is a good idea to terminate the script and explore the `.tex` file for errors. The `slightly_complex.yaml` file is similar to the following:
+Running `./yaml2latex.py examples/slightly_complex/slightly_complex.yaml examples/slightly_complex/slightly_complex.pdf` creates the files `slightly_complex.pdf` and `slightly_complex.tex`. A log file named `slightly_complex_yaml2latex.log` is also created. If an invalid `.tex` file is created, the script will hang. In this case, it is a good idea to terminate the script and explore the `.tex` file for errors. The `slightly_complex.yaml` file is similar to the following:
 
 ```
 - documentclass:
@@ -108,7 +108,7 @@ Running `./yaml2latex.py examples/slightly_complex/slightly_complex.yaml example
 
 ## Replace strings in a LaTeX template
 
-`yaml2latex` tool is normally used to replace tags in a template file. Assuming `helloworld_template.tex` is a file located in the same directory as the YAML file, then the following replaces the tag `<<<< helloworld >>>>` with the string `'Hola món'`.
+`yaml2latex` tool is normally used to replace tags in a template file. Assuming `helloworld_template.tex` is a file located in the same directory as the YAML file, then the following replaces the tag `<<<< helloworld >>>>` in the TeX file with the string `'Hola món'`.
 
 ```
 template: 'helloworld_template.tex'
@@ -128,7 +128,7 @@ replace:
   work_experience: {file: 'files/work_experience.yaml'}
 ```
 
-Do not terminate folder with `'/'`, it should be `'../common/fonts'` instead of `'../common/fonts/'`.
+Do not end path with `'/'`, it should be `'../common/fonts'` instead of `'../common/fonts/'`.
 
 ### Use variables
 
@@ -178,7 +178,7 @@ replace:
       french: '...'
 ```
 
-The selection can be carried out using the command `./yaml2latex.py examples/simple_selector/simple_selector.yaml --select lang catalan`. Multiple `select` can be chained, producing a separate document for each language. The name of the file includes the parameters chosen. If multiple selectors are listed in `select`, then all the combinations will be produced as different documents (e.g. `--select lang catalan --select lang english --select weather rain --select weather sun` will produce 4 documents all the possible combinations). One can also add which option is the default one (so it is always created), as shown below (if only `--select lang french` is passed for the YAML file below, three files will be generated, one for `catalan`, one for `english` and one for `french`). Three files (every combination of the deaults) are created with `./yaml2latex.py examples/simple_selector/simple_selector.yaml`.
+The selection can be carried out using the command `./yaml2latex.py examples/simple_selector/simple_selector.yaml --select lang catalan`. Multiple `select` can be chained, producing a separate document for each language. The name of the file includes the parameters chosen. If multiple selectors are listed in `select`, then all the combinations will be produced as different documents (e.g. `--select lang catalan --select lang english --select weather rain --select weather sun` will produce 4 documents, all the possible combinations). One can also add which option is the default one (so it is always created even if not passed as an argument in the command line), as shown below (if only `--select lang french` is passed for the YAML file below, three files will be generated, one for `catalan`, one for `english` and one for `french`). Three files (every combination of the defaults) are created with `./yaml2latex.py examples/simple_selector/simple_selector.yaml`.
 
 ```
 template: 'simple_selector_template.tex'
@@ -204,6 +204,16 @@ replace:
           english: 'It''s raining'
 ```
 
+Moreover, the following is possible:
+
+```
+job:
+  awesome_job1: 'this is an awesome job so it has a very long description bla bla'
+  awesome_job2: '<<<< awesome_job1 >>>>' # awesome_job2 is very similar to awesome_job1
+```
+
+As seen above, option `awesome_job2` of selector `job` will get the contents from option `awesome_job1`, as the variable `<<<< awesome_job1 >>>>` has a string which matches a key in the selection dictionary. This may be useful to avoid having duplicated content.
+
 ## Include dependencies
 
 If the final LaTeX document depends on external documents (such as pictures), these are (symbolically) linked so they are available to the LaTeX processor. Note how `pic_portrait` in the `includegraphics` command is in the same directory as the YAML file. The processor will not complain when processing the YAML file, as all the dependencies are linked to its directory.
@@ -211,7 +221,7 @@ If the final LaTeX document depends on external documents (such as pictures), th
 ```
 dependencies:
   - '/pictures/pic_portrait.jpg'
-  - '../common/fonts' # Do not terminate folder with '/', i.e. '../common/fonts/'
+  - '../common/fonts' # Do not end with '/', i.e. '../common/fonts/'
   - ...
 replace:
   photo: {var: mypic}
