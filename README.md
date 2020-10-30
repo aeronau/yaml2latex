@@ -120,7 +120,7 @@ The character `'` is obtained in LaTeX with `''`. Therefore, to obtain *d'hora* 
 
 ### Replace files
 
-Files can also be replaced. They can be YAML or LaTeX files. With the dictionary below, the tag `<<<< common_preamble >>>>` is replaced with the contents of `../common/preamble.tex`, while `<<<< work_experience >>>>` is replaced with the parsed `files/work_experience.yaml`.
+Tags can also be replaced by files. They can be YAML or LaTeX files. With the dictionary below, the tag `<<<< common_preamble >>>>` is replaced with the contents of `../common/preamble.tex`, while `<<<< work_experience >>>>` is replaced with the parsed `files/work_experience.yaml`.
 
 ```
 replace:
@@ -178,7 +178,7 @@ replace:
       french: '...'
 ```
 
-The selection can be carried out using the command `./yaml2latex.py examples/simple_selector/simple_selector.yaml --select lang catalan`. Multiple `select` can be chained, producing a separate document for each language. The name of the file includes the parameters chosen. If multiple selectors are listed in `select`, then all the combinations will be produced as different documents (e.g. `--select lang catalan --select lang english --select weather rain --select weather sun` will produce 4 documents, all the possible combinations). One can also add which option is the default one (so it is always created even if not passed as an argument in the command line), as shown below (if only `--select lang french` is passed for the YAML file below, three files will be generated, one for `catalan`, one for `english` and one for `french`). Three files (every combination of the defaults) are created with `./yaml2latex.py examples/simple_selector/simple_selector.yaml`.
+The selection can be carried out using the command `./yaml2latex.py examples/simple_selector/simple_selector.yaml --select lang catalan`. Multiple `select` can be chained, producing a separate document for each language. The name of the file includes the parameters chosen. If multiple selectors are listed in `select`, then all the combinations will be produced as different documents (e.g. `--select lang catalan --select lang english --select weather rain --select weather sun` will produce 4 documents, all the possible combinations). One can also add which option is the default one (so it is always created even if not passed as an argument in the command line) as shown below (if only `--select lang french` is passed for the YAML file below, three files will be generated, one for `catalan`, one for `english` and one for `french`). Three files (every combination of the defaults) are created with `./yaml2latex.py examples/simple_selector/simple_selector.yaml`.
 
 ```
 template: 'simple_selector_template.tex'
