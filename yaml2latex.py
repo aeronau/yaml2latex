@@ -482,73 +482,80 @@ def main():
 
 
     selector_dict = {k: list(v) for k, v in selector_dict.items()}
+
     splitted_st = []
-    for st in selectors:
-        splitted_st += splitDict(st)
-    selectors = splitted_st + splitDict(selector_dict) # Merge
 
-    jobs = tidyList([tidyDict(sd) for sd in selectors])
+    if selectors:
+        for st in selectors:
+            splitted_st += splitDict(st)
+        selectors = splitted_st + splitDict(selector_dict) # Merge
 
+        jobs = tidyList([tidyDict(sd) for sd in selectors])
 
-    job_keys = set()
-    for job in jobs:
-        for k in job.keys():
-            job_keys.add(k)
+        job_keys = set()
+        for job in jobs:
+            for k in job.keys():
+                job_keys.add(k)
 
-    iter_combi = tuple(sorted(list(job_keys)))
+        iter_combi = tuple(sorted(list(job_keys)))
 
-    # print("Processing jobs:")
-    i=0
-    jobs_pick = args_dict[yaml_fields["only"]]
-    jobs_to_remove = []
-    for job in jobs:
-        if not set(job_keys).issubset(job.keys()):
-            optiPrint("Selector",k,"not specified for job",job)
-            optiPrint("Current selectors are:",*[str(i) for i in job_keys])
-            optiPrint("Removing job",job)
-            jobs_to_remove.append(job)
-            continue
-        elif jobs_pick:
-            if not any([k1 == k2 and v1 == v2 for k1, v1 in job.items() for k2, v2 in jobs_pick]):
-                optiPrint("Job",job,"not picked")
-                optiPrint("Only picking:",*jobs_pick)
+        # print("Processing jobs:")
+        i=0
+        jobs_pick = args_dict[yaml_fields["only"]]
+        jobs_to_remove = []
+        for job in jobs:
+            if not set(job_keys).issubset(job.keys()):
+                optiPrint("Selector",k,"not specified for job",job)
+                optiPrint("Current selectors are:",*[str(i) for i in job_keys])
                 optiPrint("Removing job",job)
                 jobs_to_remove.append(job)
-        # print("Job",i,"is",job)
-        i+=1
+                continue
+            elif jobs_pick:
+                if not any([k1 == k2 and v1 == v2 for k1, v1 in job.items() for k2, v2 in jobs_pick]):
+                    optiPrint("Job",job,"not picked")
+                    optiPrint("Only picking:",*jobs_pick)
+                    optiPrint("Removing job",job)
+                    jobs_to_remove.append(job)
+            # print("Job",i,"is",job)
+            i+=1
 
-    for job in jobs_to_remove:
-        jobs.remove(job)
+        for job in jobs_to_remove:
+            jobs.remove(job)
 
-    if not jobs:
-        raise Exception("Option for selectors not specified or jobs do not contain the same keys.")
+        if not jobs:
+            raise Exception("Option for selectors not specified or jobs do not contain the same keys.")
 
-    iter_sets = []
-    for job in jobs:
-        iter_set = tuple()
-        for key in iter_combi:
-            iter_set += (job[key],)
-        iter_sets.append(iter_set)
+        iter_sets = []
+        for job in jobs:
+            iter_set = tuple()
+            for key in iter_combi:
+                iter_set += (job[key],)
+            iter_sets.append(iter_set)
 
-    if args_dict[yaml_fields["mix"]]:
-        # Obtain combinations of all selectors
-        iter_sets = [set(i) for i in zip(*iter_sets)]
-        iter_sets = list(itertools.product(*iter_sets))
+        if args_dict[yaml_fields["mix"]]:
+            # Obtain combinations of all selectors
+            iter_sets = [set(i) for i in zip(*iter_sets)]
+            iter_sets = list(itertools.product(*iter_sets))
 
-    print()
-    print("Submitted jobs:")
-    print(tabulate([*[[i]+list(job) for i, job in enumerate(iter_sets)]], headers=["#",*iter_combi]))
-    print()
+        print()
+        print("Submitted jobs:")
+        print(tabulate([*[[i]+list(job) for i, job in enumerate(iter_sets)]], headers=["#",*iter_combi]))
+        print()
+    else:
+        iter_combi = [None]
+        iter_sets = [None]
 
     for job_num, iter_params in enumerate(iter_sets):
 
-        select_dict = dict(zip(iter_combi, iter_params))
-
         combi_str = ""
-        for i, _ in enumerate(iter_combi):
-            combi_str += iter_combi[i] + "-" + iter_params[i]
-            if i != len(iter_combi)-1:
-                combi_str += "_"
+        select_dict = dict()
+        if iter_params:
+            select_dict = dict(zip(iter_combi, iter_params))
+
+            for i, _ in enumerate(iter_combi):
+                combi_str += iter_combi[i] + "-" + iter_params[i]
+                if i != len(iter_combi)-1:
+                    combi_str += "_"
 
         if tex_out is not None:
             tex_dir = os.path.dirname(os.path.abspath(tex_out))
@@ -569,9 +576,10 @@ def main():
         if not os.path.exists(tex_dir):
             os.makedirs(tex_dir)
 
-        print("Current job:")
-        print(tabulate([[job_num]+list(iter_params)], headers=["#",*iter_combi]))
-        print()
+        if iter_params:
+            print("Current job:")
+            print(tabulate([[job_num]+list(iter_params)], headers=["#",*iter_combi]))
+            print()
 
         if dependencies:
             for dep in dependencies:  # link dependencies

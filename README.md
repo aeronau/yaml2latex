@@ -271,3 +271,14 @@ This started as a one day project, and I use this script for some of my tasks. I
 - [ ] Error handling
 - [ ] Classes
 - [ ] ...
+
+## Run the examples
+
+Test updates with the following:
+
+- `helloworld`: `./yaml2latex.py examples/helloworld/helloworld.yaml examples/helloworld/helloworld`
+- `simple_vars`: `./yaml2latex.py examples/simple_vars/simple_vars.yaml examples/simple_vars/simple_vars`
+- `no_template`: `./yaml2latex.py examples/no_template/no_template.yaml examples/no_template/no_template`
+- `slightly_complex`: `./yaml2latex.py examples/slightly_complex/slightly_complex.yaml examples/slightly_complex/slightly_complex`
+- `simple_selector`: `./yaml2latex.py examples/simple_selector/simple_selector.yaml examples/simple_selector/simple_selector`
+- `cv`: `./yaml2latex.py examples/cv/cv.yaml ./examples/cv/cv`
