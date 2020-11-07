@@ -120,7 +120,7 @@ The character `'` is obtained in LaTeX with `''`. Therefore, to obtain *d'hora* 
 
 ### Replace files
 
-Files can also be replaced. They can be YAML or LaTeX files. With the dictionary below, the tag `<<<< common_preamble >>>>` is replaced with the contents of `../common/preamble.tex`, while `<<<< work_experience >>>>` is replaced with the parsed `files/work_experience.yaml`.
+Tags can also be replaced by files. They can be YAML or LaTeX files. With the dictionary below, the tag `<<<< common_preamble >>>>` is replaced with the contents of `../common/preamble.tex`, while `<<<< work_experience >>>>` is replaced with the parsed `files/work_experience.yaml`.
 
 ```
 replace:
