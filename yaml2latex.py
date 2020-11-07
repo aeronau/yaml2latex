@@ -5,14 +5,18 @@ import sys
 import argparse
 import subprocess
 from datetime import datetime
-import importlib
 import itertools
 import re
+from tabulate import tabulate
 
 """Random value to avoid printing the whole substituting str if
 it is longer than limit_print.
 """
 limit_print = 15
+
+"""Print optional things
+"""
+info = False
 
 """Left word identifies the field (template, dependencies, selectors).
 The right word is the key or word that has to be used in the YAML file.
@@ -21,6 +25,9 @@ If the value for of the key "selectors" (the word to its right) is changed to
 "selectors".
 """
 yaml_fields = {
+    "info": "info", # Optional printout
+    "mix": "mix", # Mix command line argument
+    "only": "only", # Only selector field
     "template": "template",  # Template field
     "outputdir": "outputdir", # Output field
     "dependencies": "dependencies",  # Dependencies field
@@ -254,7 +261,7 @@ def parseEntry(subelem1, subelem2=None, select_dict=None, replace_dict=None, var
             return "\\" + str(subelem1) + str_opts + str_args + "\n"
         else:  # Parse the new dictionary
 
-            # print("HELP: This dictionary might not make any sense", subelem2)
+            # optiPrint("HELP: This dictionary might not make any sense", subelem2)
             return parseElem(subelem2, **all_dicts)
 
     else:  # It is a single element that can be written down
@@ -271,7 +278,7 @@ def replaceTag(string, tag, subst, parse=True, **kwargs):
     if parse:
         subst = parseElem(subst, **kwargs)
 
-    print("Substituting:", rtag, "→",
+    optiPrint("Substituting:", rtag, "→",
           subst[:limit_print]+"..." if len(subst) > limit_print else subst)
 
     return string.replace(rtag, subst)
@@ -306,7 +313,7 @@ def yaml2dict(yaml_in):
     with open(yaml_in, 'r') as fyaml:
         try:
             yaml_dict = yaml.safe_load(fyaml)
-            print("YAML file read")
+            optiPrint("YAML file read")
         except yaml.YAMLError as exc:
             print(exc)
     return yaml_dict
@@ -322,6 +329,59 @@ def latex2pdf(tex_in, run_dir=os.getcwd(), system="xelatex"):
 
     return os.path.join(run_dir, pre+".pdf"), log_out
 
+def infoSplitDict(mydict):
+    """Returns [{'lang': 'english'}, {'lang': 'catalan'}] from {'lang': ['english', 'catalan']} as well as the splits and its order.
+    """
+
+    # From the multiple selections in the comand line arguments obtain a list of dictionaries as if it were read from the YAML file
+    iter_combi = []
+    iter_sets = []
+    for k in mydict.keys():
+        iter_set = []
+        mydict[k] = mydict[k] if isinstance(mydict[k], list) else [mydict[k]]
+        for myset in mydict[k]:
+            iter_set.append(myset)
+        iter_sets.append(iter_set)
+        iter_combi.append(k)
+
+    split_dict = []
+    for combi in itertools.product(*iter_sets):
+        combi_dict = {}
+        for order, value in enumerate(combi):
+            combi_dict[iter_combi[order]] = value
+        split_dict.append(combi_dict)
+
+    split_dict = [mydict] if not split_dict else split_dict
+
+    return split_dict, iter_combi, iter_sets
+
+def splitDict(mydict):
+    """Returns [{'lang': 'english'}, {'lang': 'catalan'}] from {'lang': ['english', 'catalan']}.
+    """
+    return infoSplitDict(mydict)[0]
+
+def tidyDict(mydict):
+    """Removes those pairs in mydict whose keys have values equal to None.
+    """
+    return {k: v for k, v in mydict.items() if v is not None}
+    # newdict = {}
+    # for k, v in mydict.items():
+    #     if v is not None:
+    #         newdict[k]=v
+    #     else:
+    #         print("Ignoring the following key (no value associated with it):",k)
+    # return newdict
+
+def tidyList(mylist):
+    """Remove emtpy things from mylist.
+    """
+    return list(filter(None, mylist))
+
+def optiPrint(*mystr):
+    """Optional print.
+    """
+    if info:
+        print(*mystr)
 
 def main():
     """Reads command line arguments and returns a latex converted-to-pdf file.
@@ -330,9 +390,10 @@ def main():
     wd = os.getcwd()
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--no-pdf', dest='pdf', action='store_false')
-    # This below the other means that if no --pdf is passed, the default is True
-    parser.add_argument('--pdf', dest='pdf', action='store_true')
+    parser.add_argument("--"+yaml_fields["info"], dest="info", action="store_true", help="print optional information") # If not present, no optional printout
+    parser.add_argument("--no-pdf", dest="pdf", action="store_false", help="do not produce pdf") # If not present, create pdf
+    parser.add_argument("--"+yaml_fields["mix"], dest="mix", action="store_true", help="mix so each job has the combination of all selectors") # If not present, no mixing
+    parser.add_argument("--"+yaml_fields["only"], nargs=2, action="append", help="only process all jobs containing the selector specified after --"+yaml_fields["only"])
     parser.add_argument("--"+yaml_fields["selectors"], nargs=2, action="append",
                         help="choose selector from "+yaml_fields["selectors"]+" and its value. Multiple can be specified: "+"--"+yaml_fields["selectors"]+" SELECTOR VALUE "+"--"+yaml_fields["selectors"]+" SELECTOR VALUE ..."+"IMPORTANT: the flag takes the name of the key in the YAML file")
     parser.add_argument("--"+yaml_fields["template"], help="override " +
@@ -343,6 +404,9 @@ def main():
     parser.add_argument("output", nargs='?')
 
     args_dict = vars(parser.parse_args())
+
+    global info
+    info = args_dict[yaml_fields["info"]]
 
     tex_template = args_dict[yaml_fields["template"]]
 
@@ -379,6 +443,20 @@ def main():
     else:
         dependencies = replace_dict = vars_dict = selectors = None
 
+    if not selectors:
+        print("IMPORTANT: No selectors defined in the YAML!")
+    else:
+        if isinstance(selectors, list):
+            if not isinstance(selectors[0], dict): # selectors is a list of dicts
+                selectors = [dict(zip(selectors, [None]*len(selectors)))]
+        elif isinstance(selectors, dict):
+            selectors = [selectors]
+        else:
+            selectors = [{selectors: None}]
+
+    # if not selectors:
+    #     print("No values for "+yaml_fields["selectors"]+" specified (neither in the YAML file nor in the execution)")
+
     tex_out = args_dict["output"]
 
     date_today = datetime.today().strftime('%Y%m%d')
@@ -387,13 +465,14 @@ def main():
     if not select_list:
         select_list = []  # If void
 
-    selector_dict = dict()
-    for selector in select_list:
-        selector_key = selector[0]
-        selector_val = selector[1]
+    if not selectors and select_list:
+        raise Exception("IMPORTANT: Trying to use selectors but none specified in the YAML file")
 
-        if selector_key not in selectors:
-            print("Ignoring selection "+selector_key+" unspecified in the YAML file...")
+    selector_dict = dict()
+    for selector_key, selector_val in select_list:
+
+        if selector_key not in {sd for st in selectors for sd in st.keys()}:
+            print("Ignoring selection "+selector_val+" for "+selector_key+" as "+selector_key+" is unspecified in the YAML file")
             continue
 
         if selector_key not in selector_dict.keys():
@@ -401,33 +480,67 @@ def main():
         else:
             selector_dict[selector_key].add(selector_val)
 
-    if isinstance(selectors, dict):  # This means that it contains defaults
-        for selector_key, selector_vals in selectors.items():  # Add the selectors and its defaults specified in the
-            # Ensure that it is a list, even if it contains one member (the only default option)
-            selector_vals = selector_vals if isinstance(selector_vals, list) else [selector_vals]
-            for selector_val in selector_vals:
-                if not selector_val:
-                    print("IMPORTANT: The selector \'"+selector_key+"\' does not have a default value assigned")
-                    continue
-                elif selector_key not in selector_dict.keys():
-                    # Create set of element selector_val
-                    selector_dict[selector_key] = {selector_val}
-                else:
-                    selector_dict[selector_key].add(selector_val)
-    else:
-        print("No values for "+yaml_fields["selectors"] +
-              " specified (neither in the YAML file nor in the execution)")
 
-    iter_combi = []  # [lang, density, ...] selector order of iter_sets
-    iter_sets = []  # values in the order specified in iter_combi [['catalan', 1.225, ...], ['english', 3.143, ...]]
-    for selector_key in selector_dict.keys():
-        iter_set = []
-        for selector_set in selector_dict[selector_key]:
-            iter_set.append(selector_set)
+    selector_dict = {k: list(v) for k, v in selector_dict.items()}
+    splitted_st = []
+    for st in selectors:
+        splitted_st += splitDict(st)
+    selectors = splitted_st + splitDict(selector_dict) # Merge
+
+    jobs = tidyList([tidyDict(sd) for sd in selectors])
+
+
+    job_keys = set()
+    for job in jobs:
+        for k in job.keys():
+            job_keys.add(k)
+
+    iter_combi = tuple(sorted(list(job_keys)))
+
+    # print("Processing jobs:")
+    i=0
+    jobs_pick = args_dict[yaml_fields["only"]]
+    jobs_to_remove = []
+    for job in jobs:
+        if not set(job_keys).issubset(job.keys()):
+            optiPrint("Selector",k,"not specified for job",job)
+            optiPrint("Current selectors are:",*[str(i) for i in job_keys])
+            optiPrint("Removing job",job)
+            jobs_to_remove.append(job)
+            continue
+        elif jobs_pick:
+            if not any([k1 == k2 and v1 == v2 for k1, v1 in job.items() for k2, v2 in jobs_pick]):
+                optiPrint("Job",job,"not picked")
+                optiPrint("Only picking:",*jobs_pick)
+                optiPrint("Removing job",job)
+                jobs_to_remove.append(job)
+        # print("Job",i,"is",job)
+        i+=1
+
+    for job in jobs_to_remove:
+        jobs.remove(job)
+
+    if not jobs:
+        raise Exception("Option for selectors not specified or jobs do not contain the same keys.")
+
+    iter_sets = []
+    for job in jobs:
+        iter_set = tuple()
+        for key in iter_combi:
+            iter_set += (job[key],)
         iter_sets.append(iter_set)
-        iter_combi.append(selector_key)
 
-    for iter_params in itertools.product(*iter_sets):  # iterate each set in the order iter_combi
+    if args_dict[yaml_fields["mix"]]:
+        # Obtain combinations of all selectors
+        iter_sets = [set(i) for i in zip(*iter_sets)]
+        iter_sets = list(itertools.product(*iter_sets))
+
+    print()
+    print("Submitted jobs:")
+    print(tabulate([*[[i]+list(job) for i, job in enumerate(iter_sets)]], headers=["#",*iter_combi]))
+    print()
+
+    for job_num, iter_params in enumerate(iter_sets):
 
         select_dict = dict(zip(iter_combi, iter_params))
 
@@ -456,7 +569,9 @@ def main():
         if not os.path.exists(tex_dir):
             os.makedirs(tex_dir)
 
-        print("Creating file with paramters:", iter_combi, "=", list(iter_params))
+        print("Current job:")
+        print(tabulate([[job_num]+list(iter_params)], headers=["#",*iter_combi]))
+        print()
 
         if dependencies:
             for dep in dependencies:  # link dependencies

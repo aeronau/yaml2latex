@@ -164,7 +164,7 @@ vars:
 
 ### Choose text from multiple options
 
-The idea is to be able to choose a string from a set of options from the command line. This is great for having multiple versions of the final document stored in the same file. This was the original idea for the project, to have a CV as a YAML file and produce a PDF file in the desired language.
+The idea is to be able to choose a string from a set of options from the command line. This is great for having multiple versions of the final document stored in the same file. This was the original idea for the project, to have a CV as a YAML file and produce a PDF file in the desired language. Selectors in `select` must be strings:
 
 ```
 template: '../helloworld/helloworld_template.tex'
@@ -178,7 +178,7 @@ replace:
       french: '...'
 ```
 
-The selection can be carried out using the command `./yaml2latex.py examples/simple_selector/simple_selector.yaml --select lang catalan`. Multiple `select` can be chained, producing a separate document for each language. The name of the file includes the parameters chosen. If multiple selectors are listed in `select`, then all the combinations will be produced as different documents (e.g. `--select lang catalan --select lang english --select weather rain --select weather sun` will produce 4 documents, all the possible combinations). One can also add which option is the default one (so it is always created even if not passed as an argument in the command line), as shown below (if only `--select lang french` is passed for the YAML file below, three files will be generated, one for `catalan`, one for `english` and one for `french`). Three files (every combination of the defaults) are created with `./yaml2latex.py examples/simple_selector/simple_selector.yaml`.
+The selection can be carried out using the command `./yaml2latex.py examples/simple_selector/simple_selector.yaml --select lang catalan`. Multiple `select` can be chained, producing a separate document for each language. The name of the file includes the parameters chosen. If multiple selectors are listed with `--select`, then all the combinations will be produced as different documents (e.g. `--select lang catalan --select lang english --select weather rain --select weather sun` will produce 4 documents, all the possible combinations). One can also add which option is the default one (so it is always created even if not passed as an argument in the command line), as shown below (if `--select lang french --select weather sun` is passed for the YAML file below, three _sun_ files will be generated, one for `catalan`, one for `english` and one for `french`). Only specifying one selector in the command line (assuming multiple selectors appear in the YAML file) is not enough to trigger a new job. Three files (every combination of the defaults) are created with `./yaml2latex.py examples/simple_selector/simple_selector.yaml`.
 
 ```
 template: 'simple_selector_template.tex'
@@ -209,10 +209,23 @@ Moreover, the following is possible:
 ```
 job:
   awesome_job1: 'this is an awesome job so it has a very long description bla bla'
-  awesome_job2: '<<<< awesome_job1 >>>>' # awesome_job2 is very similar to awesome_job1
+  awesome_job2: '<<<< awesome_job1 >>>>' # awesome_job2 is very similar to awesome_job1, no need to rewrite the description
 ```
 
 As seen above, option `awesome_job2` of selector `job` will get the contents from option `awesome_job1`, as the variable `<<<< awesome_job1 >>>>` has a string which matches a key in the selection dictionary. This may be useful to avoid having duplicated content.
+
+Jobs can be passed to the script by listing them as multiple defaults (without explicitly writing it in the command line). The following will create four documents:
+
+```
+select:
+    - {'lang': ['catalan', 'english'], 'weather': ['sun']}
+    - {'lang': 'french', 'weather': 'sun'}
+    - {'lang': 'spanish', 'weather': 'rain'}
+```
+
+By passing the command line option `--mix`, every combination of selectors will be submitted as a job (i.e. in the example above, `{'lang': 'catalan', 'weather': 'rain'}` is also a combination if  `--mix` is passed). As said previously, if no defaults are specified in the YAML file, each combination of the selectors specified with `--select` is a job: `--select lang english --select lang catalan --select weather sun` will create 3 documents if the YAML file only contains `select: ['lang', 'weather']`. These combinations are appended to the existing list of default jobs in the YAML file.
+
+One can also process all the jobs with in `french` by using `--only lang french`.
 
 ## Include dependencies
 
@@ -237,6 +250,8 @@ Calling `./yaml2latex.py myfile` will create a PDF file in a subdirectory `gener
 
 Files specified in the YAML file are relative to the YAML file. Files specified in the command line are relative to the run directory.
 
+Optional info will be printed by passing `--info`.
+
 ## My YAML file needs to use reserved keywords
 
 If one needs to use a reserved keyword, these can be easily changed by replacing the words in `yaml_fields` or `yaml_reserved` in `yaml2latex.py`. If `"template"` is replaced with `"mytemplate"`, then `yaml2latex` will know that the template is specified with the `"myawesometemplate"` keyword.
@@ -250,7 +265,7 @@ yaml_fields = {
 
 ## TODO
 
-This was a one day project, and I use this script for some of my tasks. It works well enough, but may not be up to the standards.
+This started as a one day project, and I use this script for some of my tasks. It works well enough, but may not be properly coded.
 
 - [ ] Improve parsing and classification (e.g. command vs string vs environment vs reserved)
 - [ ] Error handling
