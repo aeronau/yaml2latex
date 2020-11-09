@@ -4,7 +4,7 @@ This is a script that turns a YAML file into LaTeX/PDF. The main idea of the pro
 
 - Create a LaTeX file from a single YAML file or replace tags in a template (intended use)
 - Replace a tag with an external file
-- Define custom variables to avoid copying multiple times the same thing (e.g. if `<<<< author >>>>` or `{var: description}` is found it will be replaced with the associated value in `{replace: {author: 'Arnau Prat Gasull'}}`)
+- Define custom variables to avoid copying multiple times the same thing (e.g. if `<<<< author >>>>` or `{var: author}` is found it will be replaced with the associated value in `{replace: {author: 'Arnau Prat Gasull'}}`)
 - Choose text from a dictionary according to a command line argument (e.g. select a language from `{'lang': {'catalan': ..., 'english': ...}}`)
 - Create a list of defaults which can be interpreted as a list of jobs (or combination of selections) which will passed to the script automatically.
 
