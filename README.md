@@ -1,6 +1,6 @@
 # yaml2latex
 
-This is a script that turns a YAML file into LaTeX/PDF. The main idea of the project was to create a script that replaced tags `<<<< tag >>>>` in a LaTeX template specified in the yaml file. However, the code may now be used to create any LaTeX file without the need of a template. In fact, the parser has the following features:
+This is a script that converts a YAML file into LaTeX/PDF. The main idea of the project was to create a script that replaced tags `<<<< tag >>>>` in a LaTeX template specified in the yaml file. However, the code may now be used to create any LaTeX file without the need of a template. In fact, the parser has the following features:
 
 - Create a LaTeX file from a single YAML file or replace tags in a template (intended use)
 - Replace a tag with an external file
